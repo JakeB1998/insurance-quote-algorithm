@@ -32,20 +32,54 @@ This Python module provides a structured way to calculate insurance quotes based
 1. **Create input instances:**
 
 ```python
-policy_inputs = PolicyInputs(
-    coverage_type=CoverageType.FULL_COVERAGE,
-    add_ons=[AddOnKeys.ROADSIDE_ASSISTANCE, AddOnKeys.RENTAL_REIMBURSEMENT]
-)
+driver_inputs = DriverInputs(
+        at_fault_major=1,
+        at_fault_minor=1,
+        no_fault=2,
+        hit_n_runs=0,
+        duis=0,
+        age=23,
+        years_clean=5,
+        violations=1
+    )
 
-discounts_inputs = DiscountsInputs(
-    multi_policy=True,
-    safe_driver=True,
-    anti_theft=True
-)
+    location_inputs = LocationInputs(
+        crime_level_factor=4,
+        anti_theft_adjustment=2
+    )
 
-quote_inputs = QuoteInputs()
-quote_inputs.policy_inputs = policy_inputs
-quote_inputs.discounts_inputs = discounts_inputs
+    vehicle_inputs = VehicleInputs(
+        brand_type_score=3,
+        repair_complexity_score=2,
+        parts_score=4,
+        vehicle_age=15,
+        theft_score=5,
+        anti_theft_feature_score=2,
+        crash_test_rating=4,
+        active_safety_features=2,
+        passive_safety_features=3
+    )
+
+    policy_inputs = PolicyInputs(
+        coverage_type=CoverageType.FULL_COVERAGE,
+        add_ons=[AddOnKeys.ROADSIDE_ASSISTANCE, AddOnKeys.RENTAL_REIMBURSEMENT]
+    )
+
+    discounts_inputs = DiscountsInputs(discounts=DiscountsInputs.get_discounts(multi_policy=True,
+        safe_driver=True,
+        low_mileage=False,
+        anti_theft=True)
+
+    )
+
+
+    # Load into QuoteInputs
+    quote_inputs = QuoteInputs()
+    quote_inputs.driver_inputs = driver_inputs
+    quote_inputs.vehicle_inputs = vehicle_inputs
+    quote_inputs.location_inputs = location_inputs
+    quote_inputs.policy_inputs = policy_inputs
+    quote_inputs.discount_inputs = discounts_inputs
 ```
 
 
